@@ -1,0 +1,35 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: knative-template
+objects:
+- apiVersion: serving.knative.dev/v1
+  kind: Service
+  metadata:
+    labels:
+      app: ${APP_NAME}-serverless
+      app.kubernetes.io/part-of: ${APP_GROUP}
+      app.openshift.io/runtime: ${APP_RUNTIME}
+    name: ${APP_NAME}-serverless
+  spec:
+    template:
+      metadata:
+        labels:
+          app: ${APP_NAME}-serverless
+          app.kubernetes.io/component: ${APP_NAME}-serverless
+          app.openshift.io/runtime: ${APP_RUNTIME}
+          app.kubernetes.io/instance: ${APP_NAME}-serverless
+      spec:
+        containerConcurrency: 0
+        containers:
+          - name: ${APP_NAME}-serverless
+            image: image-registry.openshift-image-registry.svc:5000/${APP_NAMESPACE}/${APP_NAME}:latest
+            ports:
+              - containerPort: 8080
+                name: http1
+                protocol: TCP
+parameters:
+  - name: APP_NAME
+  - name: APP_RUNTIME
+  - name: APP_GROUP
+  - name: APP_NAMESPACE
