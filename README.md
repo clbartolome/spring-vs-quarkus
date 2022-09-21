@@ -111,7 +111,10 @@ curl http://$APP_ROUTE/weather/madrid
 
 Deploy applications using Knative services
 
+```sh
 # Deploy quarkus app
+
+
 oc process -f knative-template.yaml \
   -p APP_NAME=weather-quarkus-jvm \
   -p APP_RUNTIME=quarkus \
